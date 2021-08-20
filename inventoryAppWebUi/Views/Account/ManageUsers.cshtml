@@ -1,0 +1,88 @@
+﻿@model List<inventoryAppDomain.IdentityEntities.ApplicationUser>
+
+@{
+    ViewBag.Title = "Manage Users";
+}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/datatable/datatables.min.css" />
+    <script type="text/javascript" src="~/Content/datatable/datatables.min.js"></script>
+</head>
+
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">User Manager</h4>
+                        <p class="mb-0">
+                            Manage registered application users here
+                        </p>
+                    </div>
+
+
+                    @if (!Model.Any())
+                    {
+                        <p>No user</p>
+                    }
+                    else
+                    {
+                        <style type="text/css">
+                            #tbrole, .c {
+                                border: double;
+                            }
+                        </style>
+
+                        <div class="table-responsive rounded mb-3">
+                            @if (ViewBag.Error != null)
+                            {
+                                <div class="alert alert-danger">@ViewBag.Error</div>
+                            }
+                            @if (ViewBag.RoleChangeSuccessful != null)
+                            {
+                                <div class="alert alert-success">@ViewBag.RoleChangeSuccessful</div>
+                            }
+                            <table id="tabl_id" class="display table mb-0 tbl-server-info" >
+                                <thead>
+                                    <tr class="table-success">
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role Id</th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var user in Model)
+                                    {
+                                        <tr>
+                                            <td>@user.UserName</td>
+                                            <td>@user.Email</td>
+                                            <td>
+                                                @user.Roles.FirstOrDefault().RoleId
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Change User Role", "ChangeRole", "Account", new { user.Id },
+                                                    new { @class = "btn btn-outline-info" })
+
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink("Remove User", "RemoveUser", "Account", new { user.Id },
+                                                    new { @class = "btn btn-outline-danger" })
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+    @Html.Partial("_FooterPartial")

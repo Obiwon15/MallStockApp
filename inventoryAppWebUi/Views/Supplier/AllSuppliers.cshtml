@@ -1,0 +1,182 @@
+﻿
+@model IEnumerable<inventoryAppWebUi.Models.SupplierViewModel>
+
+
+@{
+    ViewBag.CurrentPage = "All Suppliers";
+}
+    <head>
+
+        <style>
+            .InActive {
+                color: #dc3545;
+                font-weight: bolder;
+                font-size: 12px;
+            }
+
+            .Active {
+                color: #157347;
+                font-weight: bolder;
+                font-size: 12px;
+            }
+        </style>
+        @Scripts.Render("~/bundles/modernizr")
+
+        @*@Scripts.Render("~/bundles/js")*@
+        <link rel="stylesheet" type="text/css" href="~/Content/datatable/datatables.min.css" />
+        <script type="text/javascript" src="~/Content/datatable/datatables.min.js"></script>
+    </head>
+
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">Supplier List</h4>
+                        <p class="mb-0">
+                            A supplier dashboard lets you easily gather and visualize customer data from optimizing <br>
+                            the customer experience, ensuring customer retention.
+                        </p>
+                    </div>
+                    <a id="addSupplierModal" onclick="AddSupplier()" data-target="#edit-note" class="text-primary"><i style="font-size: 35px; font-weight: bolder; cursor: pointer" class="ri-add-line mr-3" data-toggle="tooltip" data-placement="top" data-original-title="Add Supplier"></i></a>
+
+                    @*<a id="addSupplierModal" onclick="AddSupplier()" data-target="#edit-note" class="btn btn-primary add-list"><i class="fas fa-plus mr-3"></i>Add Supplier</a>*@
+                </div>
+            </div>
+            @if ((string)TempData["supplierAdded"] == "added")
+            {
+                @Html.Partial("_SwaSuccessPartial")
+            }
+
+            @if (!Model.Any())
+            {
+                <p>No Available Supplier</p>
+            }
+            else
+            {
+                <div class="col-lg-12">
+                    <div class="table-responsive rounded mb-3">
+                        <table id="tabl_id" class="display table display table mb-0 tbl-server-info">
+                            <thead class="bg-white text-uppercase">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Tag</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="">
+
+                                @foreach (var supplier in Model)
+                                {
+
+                                    <tr>
+                                        <td>@supplier.SupplierName</td>
+                                        <td>@supplier.TagNumber</td>
+                                        <td class="@supplier.Status">@supplier.Status</td>
+                                        <td>
+                                            <div class="d-flex align-items-center list-action">
+                                                <a class="badge badge-info mr-2"
+                                                   href="@Url.Action("SupplierAndProductDetails", "Supplier", new { Id = supplier.Id })"><i data-toggle="tooltip" data-placement="top" data-original-title="View" class="ri-eye-line mr-0"></i></a>
+                                                <a id="edit" class="badge bg-primary mr-2" onclick="EditSupplier(@supplier.Id)" data-target="#edit-note"><i data-toggle="tooltip" data-placement="top" data-original-title="Edit" class="ri-pencil-line mr-0"></i></a>
+
+                                                @if (supplier.Status == inventoryAppDomain.Entities.Enums.SupplierStatus.InActive)
+                                                {
+                                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Activate Supplier"
+                                                       href="@Url.Action("ProcessSupplier", "Supplier", new { Id = supplier.Id })"><i class="fas fa-truck mr-0"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Deactivate Supplier"
+                                                       href="@Url.Action("ProcessSupplier", "Supplier", new { Id = supplier.Id })"><i class="fas fa-truck mr-0"></i></a>
+                                                }
+
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+        </div>
+        <!-- Page end  -->
+    </div>
+
+</div>
+@Html.Partial("_SupplierModalPartial")
+
+@Html.Partial("_FooterPartial")
+
+<script>
+        $(document).ready(function () {
+            $('#tabl_id').DataTable();
+
+            let action = new URLSearchParams(window.location.search);
+            action = action.get('btn');
+
+            //// click the add supplier button
+            switch (action) {
+                case 'addSupplier':
+                    $("#addSupplierModal").click();
+                    break;
+                default:
+                    //alert("Not recognized.");
+                    break;
+            }
+        });
+
+        async function AddSupplier() {
+            var url = "/Supplier/AddSupplier/";
+            var data = await fetch(url);
+            data = await data.text();
+
+            var modalPartial = document.getElementById("contentpage");
+            modalPartial.innerHTML = data;
+
+            $.validator.unobtrusive.parse("#form");
+            $("#edit-note").modal('show');
+        }
+
+        async function EditSupplier(id) {
+            var url = "/Supplier/EditSupplier/" + id;
+            var data = await fetch(url);
+            console.log(data);
+            data = await data.text();
+            console.log(data);
+            var modalPartial = document.getElementById("contentpage");
+            modalPartial.innerHTML = data;
+
+            $.validator.unobtrusive.parse("#form");
+            $("#edit-note").modal('show');
+        }
+
+
+        function OnSuccess(data) {
+            if (data.response == "success") {
+                window.location.reload();
+                $("#addSupplierModal").modal('hide');
+                $("#edit-note").modal('hide');
+
+            } else if (data.response == null) {
+
+                var modalPartial = document.getElementById("contentpage");
+                modalPartial.innerHTML = data;
+
+                $.validator.unobtrusive.parse("#form");
+                $("#edit-note").modal('show');
+            }
+        }
+        function RemoveProduct(id) {
+            $.post("/Product/RemoveProduct", { id: id }, function (data) {
+                window.location.reload();
+            });
+        }
+
+            // Url.Action("SupplierDetails", "Supplier", new { Id = supplier.Id }
+            // Url.Action("EditSupplier", "Supplier", new { Id = supplier.Id })
+
+</script>
+}

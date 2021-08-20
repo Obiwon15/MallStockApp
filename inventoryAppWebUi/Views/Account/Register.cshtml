@@ -1,0 +1,74 @@
+﻿@using inventoryAppWebUi.Models
+@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="row">
+    <div id="content">
+        <div class="container-fluid">
+            <a href=""><img src="~/Content/Assets/images/logo-dark.png" class="logo" alt="logo" style="position: relative; left: 20px; top: 30px; height: 50px"></a>
+            <div class="row">
+                <div class="col-sm-6 auth-box">
+                    <div class="proclinic-box-shadow">
+                        <h2 class="widget-title">@ViewBag.Title</h2>
+                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            <div class="form-group">
+
+                                <div class="col-sm-12">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-sm-12">
+                                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Username" })
+                                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-sm-12">
+                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <div class="col-sm-12">
+                                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <div class="checkbox">
+                                        @Html.CheckBoxFor(m => m.TermsAgree)
+                                        @Html.LabelFor(m => m.TermsAgree)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Log in" class="btn btn-default" />
+                                </div>
+                            </div>
+                            <p>
+                                Already signed up? Login @Html.ActionLink("here", "Login")
+                            </p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

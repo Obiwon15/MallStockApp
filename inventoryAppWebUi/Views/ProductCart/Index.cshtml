@@ -1,0 +1,125 @@
+﻿@model inventoryAppWebUi.Models.ProductCartViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            @if (Model.ProductCartItemsTotal > 0)
+            {
+                <div class="col-lg-12">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                        <div>
+                            <h4 class="mb-3">Selected Products</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="table-responsive rounded mb-3">
+                        <table id="tabl_id" class="display table display table mb-0 tbl-server-info">
+                            <thead>
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Quantity Per Pack</th>
+                                @*<th>Price Per Unit</th>*@
+                                <th>Price Per Pack</th>
+                                <th>Prescribe Amount</th>
+                                <th>Price Per Tablet</th>
+                                <th>Sum Total</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            @foreach (var Product in Model.CartItems)
+                            {
+                                <tr>
+                                    <td class="font-weight-bold">@Product.Product.ProductName</td>
+                                    <td style="font-weight: bolder">
+                                        <button class="fas fa-plus increase text-success" style="cursor: pointer; font-size: 20px"onclick="increase(@Product.ProductId)"> </button> @Product.Amount <button class="fas fa-minus decrease text-warning" style="cursor: pointer; font-size: 20px" onclick="decrease(@Product.Id)"> </button>
+                                    </td>
+                                    @*<td>@Product.Product.PricePerUnit</td>*@
+                                    <td class="text-left">@Product.Product.Price</td>
+                                    <td>@Product.PrescribedAmount (@(Product.PrescribedAmount/ Product.Product.PricePerUnit) tablets)</td>
+                                    <td>@Product.Product.PricePerUnit </td>
+                                    <td>@((Product.Product.Price * Product.Amount) + Product.PrescribedAmount)  </td>
+                                    <td>
+
+                                        <a class="badge bg-warning mr-2"
+                                           href="@Url.Action("RemoveFromShoppingCart", "ProductCart", new {Id = Product.Id})">
+                                            <i data-toggle="tooltip" data-placement="top" data-original-title="Remove from cart" class="ri-delete-bin-line mr-0" style="font-size: 20px"></i>
+                                        </a>
+
+                                        @*@Html.ActionLink("Remove From Cart", "RemoveFromShoppingCart", "ProductCart", new { Product.Id },
+        new { @class = "btn btn-outline-primary" })*@
+                                    </td>
+
+                                </tr>
+                            }
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td class="text-right">Total:</td>
+                                <td class="text-left" colspan="2">
+                                    @Model.ProductCartItemsTotal.ToString()
+                                </td>
+                                <td class="text-left" colspan="2">
+                                    @Model.ProductCartTotal.ToString("c")
+                                </td>
+                            </tr>
+
+                            </tfoot>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                @Html.ActionLink("Clear Cart", "RemoveAllCart", "ProductCart", null,
+                                    new {@class = "btn btn-warning"})
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.ActionLink("Pay With Card", "Invoice", "Order", null,
+                                    new {@class = "btn btn-success"})
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.ActionLink("Pay With Cash", "Invoice", "Order", new {payWithCash=true},
+                                    new {@class = "btn btn-success"})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="width: 100%" class="text-center">
+                    <i style="font-size: 150px;" class="fas fa-shopping-basket text-warning"></i>
+                    <p>Sorry! No available Products have been selected.</p>
+                </div>
+            }
+        </div>
+        <!-- Page end  -->
+    </div>
+
+</div>
+
+@Html.Partial("_FooterPartial")
+
+
+<script>
+
+    function increase(itemId) {
+        $.post("/ProductCart/AddToShoppingCart/", { id: itemId }, function (data) {
+            window.location.reload();
+        });
+    }
+
+    function decrease(itemId) {
+        $.post("/ProductCart/RemoveFromShoppingCart/", { id: itemId }, function (data) {
+            window.location.reload();
+        });
+    }
+
+
+</script>

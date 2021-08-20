@@ -1,0 +1,53 @@
+﻿@using System.Web.Mvc.Html
+@using inventoryAppWebUi.Models
+@model UpdateUserRoleViewModel
+
+@{
+    ViewBag.Title = "Change Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div id="content">
+        <div class="container-fluid">
+            <span>
+                <img src="~/Content/Assets/images/logo.png" class="logo" alt="logo" style="height: 50px; padding-top: 4px; margin-left: 10px">
+            </span>
+            <div class="row" id="formContainer">
+                <div class="col-sm-6 auth-box">
+                    <div class="proclinic-box-shadow" id="form">
+                        <h2 class="widget-title">@ViewBag.Title</h2>
+                        @if (ViewBag.Error != null)
+                        {
+                            <div class="alert alert-danger">@ViewBag.Error</div>
+                        }
+                        @using (Html.BeginForm("UpdateUserRole", "Account", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                            if (ViewBag.Error != null)
+                            {
+                                <p>@ViewBag.Error</p>
+                            }
+                            <div class="col-sm-12">
+                                @Html.TextBoxFor(m => m.Email, new {@class = "form-control", placeholder = "Email"})
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    @Html.DropDownListFor(model => model.UpdatedUserRole, new SelectList(Model.Roles), "Select Role", new {@class = "form-control textbox"})
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <input type="submit" value="Change Role" class="btn btn-primary col-sm-12" style="height: 3rem"/>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/js")
+    @Scripts.Render("~/bundles/jqueryval")
+</div>

@@ -1,0 +1,100 @@
+﻿@model inventoryAppWebUi.Models.SupplierViewModel
+
+@{
+    ViewBag.CurrentPage = "Add Supplier";
+}
+
+<!-- Modal Edit -->
+<div class="modal fade" id="edit-note" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="popup text-left">
+                    <div class="media align-items-top justify-content-between">
+                        <h3 class="mb-3">Add Supplier</h3>
+                        <div class="btn-cancel p-0" data-dismiss="modal"><i class="las la-times"></i></div>
+                    </div>
+                    <div class="content edit-notes">
+                        <div class="card card-transparent card-block card-stretch event-note mb-0">
+                            <div class="card-body px-0 bukmark">
+                                <div class="d-flex align-items-center justify-content-between pb-2 mb-3 border-bottom">
+                                    <div class="quill-tool">
+
+                                    </div>
+                                </div>
+                                <div id="quill-toolbar1">
+                                    
+                                @using (Html.BeginForm("Save", "Supplier", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            @Html.TextBoxFor(s => s.SupplierName, new {@class = "form-control textbox", PlaceHolder = "Name"})
+                                            @Html.ValidationMessageFor(s => s.SupplierName, "", new {@class = "text-danger"})
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            @Html.TextBoxFor(s => s.Email, new {@class = "form-control textbox", PlaceHolder = "Email Address"})
+                                            @Html.ValidationMessageFor(s => s.Email, "", new {@class = "text-danger"})
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            @Html.TextBoxFor(s => s.Website, new {@class = "form-control textbox", PlaceHolder = "Website Address"})
+                                            @Html.ValidationMessageFor(s => s.Website, "", new {@class = "text-danger"})
+                                        </div>
+                                    </div>
+
+                                    if (Model.Id == 0)
+                                    {
+
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                @Html.Label($"Your Tag number is: {(string)ViewBag.TagNumber}") <small>(Auto Generated)</small>
+                                                @Html.TextBoxFor(s => s.TagNumber, new { @class = "form-control textbox", PlaceHolder = "Tag Number", @Value = (string)ViewBag.TagNumber, @readonly = "readonly" })
+                                                @Html.ValidationMessageFor(s => s.TagNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                @Html.TextBoxFor(s => s.TagNumber, new { @class = "form-control textbox", PlaceHolder = "Tag Number", @readonly = "readonly" })
+                                                @Html.ValidationMessageFor(s => s.TagNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <input type="submit" value="Save Supplier" class="btn btn-primary col-sm-12" />
+                                        </div>
+                                    </div>
+
+                                    @Html.HiddenFor(s => s.Id)
+                                }
+                                </div>
+                            </div>
+                            @*<div class="card-footer border-0">
+                                <div class="d-flex flex-wrap align-items-ceter justify-content-end">
+                                    <div class="btn btn-primary mr-3" data-dismiss="modal">Cancel</div>
+                                    <div class="btn btn-outline-primary" data-dismiss="modal">Save</div>
+                                </div>
+                            </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@Scripts.Render("~/bundles/js")
+@Scripts.Render("~/bundles/jqueryval")

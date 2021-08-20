@@ -1,0 +1,61 @@
+﻿@model inventoryAppWebUi.Models.TransactionViewModel
+
+@{
+    ViewBag.Title = "title";
+}
+
+<div class="container">
+    <div class="container">
+        <h4 class="text-uppercase">Payment Details</h4>
+        @using (Html.BeginForm("ProcessPayment", "Payment", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @Html.Label("Email", "Email", new { @class = "" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Email" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @Html.Label("Card Number", "CardNumber", new { @class = "" })
+                    @Html.EditorFor(model => model.CardNumber, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Card Number" } })
+                    @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group inline">
+                <div class="col-sm-6">
+                    @Html.Label("Expiry Month", "Expiry Month", new { @class = "" })
+                    @Html.EditorFor(model => model.ExpiryMonth, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Month" } })
+                    @Html.ValidationMessageFor(model => model.ExpiryMonth, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.Label("Expiry Year", "Expiry Year", new { @class = "" })
+                    @Html.EditorFor(model => model.ExpiryYear, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Year" } })
+                    @Html.ValidationMessageFor(model => model.ExpiryYear, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @Html.Label("CVV", "CVV", new { @class = "" })
+                    @Html.EditorFor(model => model.Cvv, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "CVV" } })
+                    @Html.ValidationMessageFor(model => model.Cvv, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @Html.Label("Card Pin", "Card Pin", new { @class = "" })
+                    @Html.EditorFor(model => model.Pin, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Card Pin" } })
+                    @Html.ValidationMessageFor(model => model.Pin, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.OrderId)
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input type="submit" value="Pay" class="btn btn-primary col-sm-12" style="height: 3rem" />
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

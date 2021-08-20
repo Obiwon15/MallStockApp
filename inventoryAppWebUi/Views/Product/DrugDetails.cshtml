@@ -1,0 +1,83 @@
+﻿@model IEnumerable<inventoryAppWebUi.Models.DrugViewModel>
+@using System.Globalization
+
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">Drug Details</h4>
+                        <p class="mb-0">
+                            @*See drugs suppllied by: @Model.DrugName*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                @*<div class="table-responsive rounded mb-3">
+                    <table class="display table display table mb-0 tbl-server-info">
+                        <thead class="bg-white text-uppercase">
+                            <tr class="">
+                                <th>Supplier Name</th>
+                                <th>Status</th>
+                                <th>Website</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr>
+                                <td>@Model.DrugName</td>
+                                <td>@Model.DrugCategory</td>
+                                <td>@Model.SupplierTag</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>*@
+                <div class="col-lg-12">
+                    <div class="table-responsive rounded mb-3">
+                        @*@if (!Model.Any())
+                        {
+                            <h3>No Drugs supplied!</h3>
+                        }
+                        else
+                        {*@
+                            <table id="tabl_id" class="display table display table mb-0 tbl-server-info">
+                                <thead class="bg-white text-uppercase">
+                                    <tr>
+                                        <th>Drug Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Expiry date</th>
+                                    </tr>
+                                </thead>
+                                @*<tbody class="">
+
+                                    @foreach (var drug in Model)
+                                    {
+
+                                        <tr>
+                                            <td class="font-weight-bold">@drug.DrugName</td>
+                                            <td class="">@drug.Quantity</td>
+                                            <td class=""> <span>@NumberFormatInfo.CurrentInfo.CurrencySymbol</span> @drug.Price</td>
+                                            <td>@drug.ExpiryDate.ToShortDateString() </td>
+
+                                        </tr>
+                                    }
+                                </tbody>*@
+                            </table>
+                        @*}*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Page end  -->
+    </div>
+
+</div>
+@Html.Partial("_FooterPartial")
+
+<script>
+    $(document).ready(function () {
+        $('#tabl_id').DataTable();
+</script>

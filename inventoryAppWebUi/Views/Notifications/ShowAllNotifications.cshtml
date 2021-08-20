@@ -1,0 +1,90 @@
+﻿@using inventoryAppDomain.Entities
+@using Newtonsoft.Json
+
+@section metatags {
+    <meta name="description" content="Notification page for POSProducts"/>
+}
+
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">All Notifications</h4>
+                        <p class="mb-0">
+                            This is the notifications page for POSProducts
+                        </p>
+                    </div>
+
+                    
+
+
+                    @*<a data-toggle="modal" data-target="#edit-note" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Add Product</a>*@
+                </div>
+            </div>
+
+
+            
+            
+            <div class="col-lg-12">
+
+                @{
+                    var webClient = new WebClient();
+                    string url = "https://localhost:44324/Notifications/GetRecentFive";
+                    try
+                    {
+                        string jsonString = webClient.DownloadString(new Uri(url));
+                        var json = JsonConvert.DeserializeObject<List<Notification>>(jsonString);
+                        if (json.Any())
+                        {
+                            foreach (var notification in json)
+                            {
+                                <a href="#" onclick="getNotification(@notification.Id)" id="particularNotification" class="iq-sub-card">
+                                    <div class="media align-items-center cust-card py-3 border-bottom">
+                                        <div class="media-body ml-3">
+                                            <div class="d-flex align-items-center justify-content-between">
+
+                                                <h6 class="mb-0">@notification.Title</h6>
+                                            </div>
+                                            <small class="mb-0">@notification.NotificationDetails</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <a href="#" class="iq-sub-card">
+                                <div class="media align-items-center cust-card py-3 border-bottom">
+                                    <div class="">
+                                        <img class="avatar-50 rounded-small"
+                                             src="~/Content/assets/images/user/01.jpg" alt="01">
+                                    </div>
+                                    <div class="media-body ml-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <h6 class="mb-0">Emma Watson</h6>
+                                            <small class="text-dark"><b>1g2 : 47 pm</b></small>
+                                        </div>
+                                        <small class="mb-0">Lorem ipsum dolor sit amet</small>
+                                    </div>
+                                </div>
+                            </a>
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        ViewBag.NoNetwork = "Check your Network Settings";
+                    }
+                }
+                @if (ViewBag.NoNetwork != null)
+                {
+                    <script>
+                                                            alert(@ViewBag.NoNetwork);
+                    </script>
+                }
+            </div>
+            
+        </div>
+    </div>
+</div>

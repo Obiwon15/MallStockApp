@@ -1,0 +1,252 @@
+﻿﻿
+@model inventoryAppWebUi.Models.ProductViewModel
+@using System.Globalization
+
+
+@{ ViewBag.Title = "Add Product";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                ViewBag.CurrentPage = "Add Product"; }
+
+<!-- Modal Edit -->
+<div class="modall fadee" id="edit-note" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="popup text-left">
+                    <div class="media align-items-top justify-content-between">
+                        <h3 class="mb-3">Add Product</h3>
+                        <div class="btn-cancel p-0" data-dismiss="modal"><i class="las la-times"></i></div>
+                    </div>
+                    <div class="content edit-notes">
+                        <div class="card card-transparent card-block card-stretch event-note mb-0">
+                            <div class="card-body px-0 bukmark">
+                                <div class="d-flex align-items-center justify-content-between pb-2 mb-3 border-bottom">
+                                    <div class="quill-tool">
+                                    </div>
+                                </div>
+                                <div id="quill-toolbar1">
+                                    @using (Html.BeginForm("SaveProduct", "Product", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                    {
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("ProductName", "Product Name", new { @class = "" })
+                                    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Product Name" } })
+                                    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("Quantity", "Quantity Supplied")
+                                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Quantity" } })
+                                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("Price", "Price")
+                                    <span>@NumberFormatInfo.CurrentInfo.CurrencySymbol</span>
+                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Price" } })
+                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("ExpiryDate", "Expiry Date")
+                                    @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control datepicker", @Value = Model.ExpiryDate != null ? Model.ExpiryDate.Date.ToString("{0:d MMM yyyy}") : null } })
+                                    @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("SupplierTag", "Supplier Tag")
+                                    @Html.EditorFor(model => model.SupplierTag, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Tag number" } })
+                                    @Html.ValidationMessageFor(model => model.SupplierTag, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.Label("ProductCategory", "Product Category")
+                                    @Html.DropDownListFor(model => model.ProductCategoryId, new SelectList(Model.ProductCategory, "id", "CategoryName"), "Select Category", new { @class = "form-control textbox" })
+                                </div>
+                            </div>
+                            @Html.HiddenFor(model => model.Id)
+                            @*<div class="col-md-2">
+                                    <div class="form-group">
+                                        <input type="submit" value="Save" class="btn btn-primary col-sm-12 mr-2" style="height: 3rem" />
+                                    </div>
+                                </div>*@
+
+                        </div>}
+                                </div>
+                            </div>
+                            <div class="card-footer border-0">
+                                <div class="d-flex flex-wrap align-items-ceter justify-content-end">
+
+
+                                    <input type="submit" value="Save" class="btn btn-primary col-sm-12 mr-2" style="height: 3rem" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="container-fluid add-form-list">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="header-title">
+                        <h4 class="card-title">Add Product</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("SaveProduct", "Product", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("ProductName", "Product Name", new { @class = "" })
+                                @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Product Name" } })
+                                @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Quantity", "Quantity")
+                                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Quantity" } })
+                                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Price", "Price")
+                                <span>@NumberFormatInfo.CurrentInfo.CurrencySymbol</span>
+                                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Price" } })
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("ExpiryDate", "Expiry Date")
+                                @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control datepicker", @Value = Model.ExpiryDate != null ? Model.ExpiryDate.Date.ToString("{0:d MMM yyyy}") : null } })
+                                @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("SupplierTag", "Supplier Tag")
+                                @Html.EditorFor(model => model.SupplierTag, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Tag number" } })
+                                @Html.ValidationMessageFor(model => model.SupplierTag, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("ProductCategory", "Product Category")
+                                @Html.DropDownListFor(model => model.ProductCategoryId, new SelectList(Model.ProductCategory, "id", "CategoryName"), "Select Category", new { @class = "form-control textbox" })
+                            </div>
+                        </div>
+                        @Html.HiddenFor(model => model.Id)
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-primary col-sm-12 mr-2" style="height: 3rem" />
+                            </div>
+                        </div>
+
+                    </div>
+                        <button type="submit" class="btn btn-primary mr-2">Add Product</button>
+                        <button type="reset" class="btn btn-danger">Reset</button>
+                    }
+                    <form action="http://iqonic.design/themes/posdash/html/backend/page-list-product.html" data-toggle="validator">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>-->
+<!-- Page end  -->
+<!--</div>-->
+@*<div class="row">
+        <div id="content" class="add-Product-content">
+            <div class="container-fluid add-form-list">
+                <div class="row" id="formContainer">
+                    <div class="col-sm-8 auth-box">
+                        @if ((string)TempData["added"] == "added")
+                        {
+                            @Html.Partial("_SwaSuccessPartial")
+                        }
+                        @if ((string)TempData["failed"] == "failed")
+                        {
+                            @Html.Partial("_ErrorNotificationPartial")
+                        }
+                        <div class="card text-left" id="form" style="margin-top: 70px; margin-left: auto; margin-right: auto">
+                            <h2 class="widget-title text-center">Add Product</h2>
+
+                            @using (Html.BeginForm("SaveProduct", "Product", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        @Html.Label("ProductName", "Product Name", new { @class = "" })
+                                        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Product Name" } })
+                                        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        @Html.Label("Quantity", "Quantity")
+                                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Quantity" } })
+                                        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        @Html.Label("Price", "Price")
+                                        <span>@NumberFormatInfo.CurrentInfo.CurrencySymbol</span>
+                                        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Price" } })
+                                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        @Html.Label("ExpiryDate", "Expiry Date")
+                                        @Html.EditorFor(model => model.ExpiryDate, new { htmlAttributes = new { @class = "form-control datepicker", @Value = Model.ExpiryDate != null ? Model.ExpiryDate.Date.ToString("{0:d MMM yyyy}") : null } })
+                                        @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        @Html.Label("SupplierTag", "Supplier Tag")
+                                        @Html.EditorFor(model => model.SupplierTag, new { htmlAttributes = new { @class = "form-control textbox", PlaceHolder = "Tag number" } })
+                                        @Html.ValidationMessageFor(model => model.SupplierTag, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        @Html.DropDownListFor(model => model.ProductCategoryId, new SelectList(Model.ProductCategory, "id", "CategoryName"), "Select Category", new { @class = "form-control textbox" })
+
+                                    </div>
+                                </div>
+                                @Html.HiddenFor(model => model.Id)
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input type="submit" value="Save" class="btn btn-primary col-sm-12" style="height: 3rem" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+

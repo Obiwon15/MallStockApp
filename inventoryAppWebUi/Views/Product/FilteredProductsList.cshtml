@@ -1,0 +1,108 @@
+﻿
+@model inventoryAppWebUi.Models.ProductSearchViewModel
+
+@{
+    ViewBag.Title = "FilteredProductsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    @*@Scripts.Render("~/bundles/js")*@
+    <link rel="stylesheet" type="text/css" href="~/Content/datatable/datatables.min.css" />
+    <script type="text/javascript" src="~/Content/datatable/datatables.min.js"></script>
+</head>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<div style="margin-top: -50px" class="content-page">
+
+    @if (!Model.Equals(null))
+    {
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                        <div>
+                            @*@using (Html.BeginForm("FilteredProductsList", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(s => s.SearchString, new { @class = "form-control textbox", PlaceHolder = "Enter Search Query" })
+                        @Html.ValidationMessageFor(s => s.SearchString, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="submit" value="Search" class="btn btn-primary col-sm-12" />
+                    </div>
+                </div>
+            }*@
+                            <h4 class="mb-3">Available Product</h4>
+                            <p class="mb-0">
+                                Click add to A Product dashboard lets you easily gather and visualize customer data from optimizing <br>
+                                the customer experience, ensuring customer retention.
+                            </p>
+                        </div>
+                        <a class="text-success mr-2" href="@Url.Action("index", "ProductCart")" ><i style="font-size: 35px;" data-toggle="tooltip" data-placement="top" data-original-title="View Cart" class="ri-shopping-cart-2-line mr-0"></i></a>
+
+                        @*@Html.ActionLink(" ", "Index", "ProductCart", null,
+                           new { @class = "btn btn-success" })*@
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="table-responsive rounded mb-3">
+                        <table id="tablee" class="display table display table mb-0 tbl-server-info">
+                            <thead class="bg-white text-uppercase">
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var Product in Model.Products)
+                                {
+
+                                    <tr>
+                                        <td>@Product.ProductName</td>
+                                        <td>@Product.Quantity</td>
+                                        <td>@Product.Price</td>
+                                        <td>@Product.ProductCategory.CategoryName</td>
+                                        <td>
+                                            <a href="@Url.Action("AddToShoppingCart", "ProductCart", new { Product.Id })"><i style="font-size: 35px;" data-toggle="tooltip" data-placement="top" data-original-title="Add to cart" class="ri-shopping-basket-2-line mr-0 text-warning"></i> </a>
+                                            @*Html.ActionLink("Add to cart", "AddToShoppingCart", "ProductCart", new { Product.Id },
+                                                 new { @class = "btn btn-outline-primary" })*@
+                                        </td>
+
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+
+    else
+    {
+        <h1>Available Products</h1>
+        <p>Sorry! No Products are available at the moment.</p>
+    }
+</div>
+
+@Html.Partial("_FooterPartial")
+
+
+<script>
+    $(document).ready(function () {
+        $('#tablee').DataTable();
+    });
+</script>

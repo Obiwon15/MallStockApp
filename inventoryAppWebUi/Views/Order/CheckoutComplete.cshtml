@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "CheckoutComplete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>@ViewBag.CheckoutCompleteMessage</h2>
+
+    @if((string)TempData["dispensed"] == "dispensed")
+    {
+        <script>
+            swal("Dispensed!", "", "success");
+        </script>
+
+    }
+
+<script>
+    $('document').ready(function () {
+        // swal("Dispensed!", "", "success");
+    }
+</script>

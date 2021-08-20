@@ -1,0 +1,30 @@
+﻿<head>
+    <link href="~/Content/Assets/css/animate.css" rel="stylesheet" />
+    <script src="~/Content/Assets/js/jquery-3.2.1.min.js"></script>
+
+    <style>
+        #panel {
+            margin-top: 15px;
+            margin-bottom: -50px
+        }
+
+        .delay-5s {
+            animation-delay: 5s;
+        }
+    </style>
+</head>
+
+<div class="alert alert-warning alert-dismissible fade show animated fadeIn" role="alert" id="panel">
+    <strong>Opps!</strong> Something went wrong.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+
+<script>
+    const element = document.querySelector('#panel');
+
+    element.addEventListener('animationend', () => {
+        element.classList.add('delay-5s', 'fadeOut');
+    });
+</script>

@@ -1,0 +1,83 @@
+﻿@model inventoryAppWebUi.Models.SupplierAndProductsViewModel
+@using System.Globalization
+
+<div class="content-page">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+                        <h4 class="mb-3">Supplier Details</h4>
+                        <p class="mb-0">
+                            See Products suppllied by: @Model.SupplierViewModel.SupplierName.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="table-responsive rounded mb-3">
+                    <table class="display table display table mb-0 tbl-server-info">
+                        <thead class="bg-white text-uppercase">
+                            <tr class="">
+                                <th>Supplier Name</th>
+                                <th>Status</th>
+                                <th>Website</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr>
+                                <td>@Model.SupplierViewModel.SupplierName</td>
+                                <td>@Model.SupplierViewModel.Status</td>
+                                <td>@Model.SupplierViewModel.Website</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-12">
+                    <div class="table-responsive rounded mb-3">
+                        @if (!Model.ProductViewModel.Any())
+                        {
+                            <h3>No Products supplied!</h3>
+                        }
+                        else
+                        {
+                            <table id="tabl_id" class="display table display table mb-0 tbl-server-info">
+                                <thead class="bg-white text-uppercase">
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Expiry date</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="">
+
+                                    @foreach (var Product in Model.ProductViewModel)
+                                    {
+
+                                        <tr>
+                                            <td class="font-weight-bold">@Product.ProductName</td>
+                                            <td class="">@Product.Quantity</td>
+                                            <td class=""> <span>@NumberFormatInfo.CurrentInfo.CurrencySymbol</span> @Product.Price</td>
+                                            <td>@Product.ExpiryDate.ToShortDateString() </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- Page end  -->
+    </div>
+
+</div>
+@Html.Partial("_FooterPartial")
+
+<script>
+    $(document).ready(function () {
+        $('#tabl_id').DataTable();
+</script>

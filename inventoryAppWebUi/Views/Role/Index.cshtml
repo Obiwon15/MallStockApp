@@ -1,0 +1,127 @@
+﻿@model List<String>
+
+@{
+    ViewBag.Title = "Roles";
+    ViewBag.CurrentPage = "All Roles";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/Content/datatable/datatables.min.css" />
+    <script type="text/javascript" src="~/Content/datatable/datatables.min.js"></script>
+</head>
+
+<style type="text/css">
+    #tbrole, .c {
+        border: double;
+    }
+</style>
+
+
+<div class="content-page">
+    @if ((string)TempData["roleAdded"] == "added")
+    {
+        @Html.Partial("_SwaSuccessPartial")
+    }
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                    <div>
+
+                        <h4 class="mb-3">Available Roles For Application</h4>
+                        <p class="mb-0">
+                            Available Roles
+                        </p>
+                    </div>
+                    <a id="addRoleModal" onclick="AddRole()" data-target="#edit-note" class="badge bg-success mr-2"
+                       href="#"><i data-toggle="tooltip" data-placement="top" data-original-title="Add" class="ri-add-line mr-0"></i></a>
+
+                    @*@Html.ActionLink("Create New Role", "Create", "Role", null,
+                        new { @class = "btn btn-primary" })*@
+
+                </div>
+            </div>
+
+            <div class="col-lg-12">
+                <div class="table-responsive rounded mb-3">
+                    <table id="tabl_id" class="display table display table mb-0 tbl-server-info">
+                        <thead>
+                            <tr class="success">
+                                <td class="c">
+                                    Role Name
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="c">
+                                        @item
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @*@Html.ActionLink("Create New Role", "Create", "Role", null,
+                new { @class = "btn btn-primary" })*@
+
+        </div>
+        <!-- Page end  -->
+    </div>
+
+</div>
+@Html.Partial("_RoleModalPartial")
+@Html.Partial("_FooterPartial")
+
+<script>
+    $(document).ready(function () {
+        $('#tabl_id').DataTable();
+
+    });
+
+    async function AddRole() {
+        alert("role")
+        var url = "/Role/Create/";
+        var data = await fetch(url);
+        data = await data.text();
+
+        var modalPartial = document.getElementById("contentpage");
+        modalPartial.innerHTML = data;
+
+        $.validator.unobtrusive.parse("#form");
+        $("#edit-note").modal('show');
+    }
+
+    function OnSuccess(data) {
+        // window.location.reload();
+        // $("#addProductCategoryModal").modal('hide');
+        // $("#edit-note").modal('hide');
+
+        if (data.response == "success") {
+            $("#edit-note").modal('hide');
+            //$("#addSupplierModal").modal('hide');
+            window.location.reload();
+
+        }
+
+        var modalPartial = document.getElementById("contentpage");
+        modalPartial.innerHTML = data;
+        $.validator.unobtrusive.parse("#form");
+        $("#edit-note").modal('show');
+        alert("Success");
+
+    }
+
+    //function OnRoleAdded(data) {
+    //    // $("#edit-note").modal('hide');
+    //    window.location.reload();
+    //    //alert(data.response);
+
+
+    //}
+</script>

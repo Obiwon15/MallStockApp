@@ -1,0 +1,43 @@
+﻿@model IEnumerable<inventoryAppWebUi.Models.ProductViewModel>
+@using System.Globalization
+
+@{
+    ViewBag.CurrentPage = "Products by Supplier";
+}
+
+<div class="card">
+    <div class="card-body col-lg-12">
+
+        @if (!Model.Any())
+        {
+            <p>No Products by this Supplier</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered text-left">
+                    <thead>
+                        <tr class="table-success">
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Expiry date</th>
+                        </tr>
+                    </thead>
+                    @foreach (var Product in Model)
+                    {
+                        <tbody>
+                            <tr class="info" style="cursor: pointer">
+                                <td class="font-weight-bold">@Product.ProductName</td>
+                                <td class="">@Product.Quantity</td>
+                                <td class=""> <span>@NumberFormatInfo.CurrentInfo.CurrencySymbol</span> @Product.Price</td>
+                                <td>@Product.ExpiryDate.ToShortDateString() </td>
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+
+            </div>
+        }
+    </div>
+</div>
